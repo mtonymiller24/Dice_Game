@@ -1,0 +1,406 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>One Dice Game</title>
+
+<style type="text/css">
+body {
+  text-align: center;
+  min-width: 825px;
+}
+
+.diceHeader {
+  height: 50px;
+  line-height: 50px;
+  width: 400px;
+  margin: 0 auto 0;
+  font-size: 20px;
+  text-align: center;
+  font-weight: bold;
+  border-bottom: 2px solid black;
+  padding-bottom: 3px;
+}
+  .diceRules {
+	  margin: 20px 0 30px;
+	}
+
+.diceGame {
+   display: inline-block;
+   width: 33%;
+   min-width: 400px;
+}
+  .dice {
+  }
+	  .diceRow {
+	  }
+	  
+  .score {
+    margin-top: 20px;
+  }
+    
+    .scoreName {
+        font-size: 14px;
+        
+    }
+	    .scoreCount {
+	       font-weight: bold;
+	       padding-left: 5px;
+	       font-size: 20px;
+	    }
+	    .win .scoreCount {
+	        color: green;
+	    }
+	    .lose .scoreCount {
+	        color: red;
+	    }
+
+.win:after {
+    content: "Winner!";
+	font-size: 25px;
+	font-weight: bold;
+	position: absolute;
+	margin-left: -40px;
+	color: green;
+}
+.lose:after {
+    content: "Bust";
+    font-size: 25px;
+    font-weight: bold;
+    position: absolute;
+    margin-left: -27px;
+    color: red;
+}
+
+.die.die1:after, 
+.die.one:after { 
+    box-shadow: 0 .2em 0 #FFF 
+}
+.die.die2:after,
+.die.two:after { 
+    background: transparent;
+    box-shadow: -2.3em -2.3em 0 #345, 
+             2.3em  2.3em 0 #345, 
+            -2.3em -2.3em 0 #FFF, 
+             2.3em  2.4em 0 #FFF 
+}
+.die.die3:after,
+.die.three:after { 
+    box-shadow: -2.3em -2.3em 0 #345, 
+             2.3em  2.3em 0 #345, 
+            -2.3em -2.3em 0 #FFF, 
+             2.3em  2.4em 0 #FFF, 
+                 0   .2em 0 #FFF 
+}
+.die.die4:after,
+.die.four:after { 
+    background: transparent;
+        box-shadow: -2.3em -2.3em 0 #345, 
+                 2.3em  2.3em 0 #345, 
+                -2.3em  2.3em 0 #345, 
+                 2.3em -2.3em 0 #345, 
+                -2.3em -2.3em 0 #FFF, 
+                 2.3em  2.4em 0 #FFF, 
+                -2.3em  2.4em 0 #FFF, 
+                 2.3em -2.3em 0 #FFF 
+}
+.die.die5:after,
+.die.five:after { 
+    box-shadow: -2.3em -2.3em 0 #345, 
+             2.3em  2.3em 0 #345, 
+            -2.3em  2.3em 0 #345, 
+             2.3em -2.3em 0 #345, 
+            -2.3em -2.2em 0 #FFF, 
+             2.3em -2.2em 0 #FFF, 
+             2.3em  2.4em 0 #FFF, 
+            -2.3em  2.4em 0 #FFF,
+                 0   .2em 0 #FFF 
+}
+.die.die6:after,
+.die.six:after {
+    background: transparent;
+    box-shadow: -2.3em -2.3em 0 #345,
+            -2.3em      0 0 #345,
+            -2.3em  2.3em 0 #345,
+             2.3em -2.3em 0 #345,
+             2.3em      0 0 #345,
+             2.3em  2.3em 0 #345,
+            -2.3em -2.1em 0 #FFF,
+            -2.3em   .2em 0 #FFF,
+            -2.3em  2.4em 0 #FFF,
+             2.3em  2.4em 0 #FFF,
+             2.3em   .2em 0 #FFF,
+             2.3em -2.1em 0 #FFF
+}
+.die {
+    border-top: 1px solid #f1f1f1;
+    width: 50px; height: 50px;
+    border-radius: 10px;
+    position: relative;
+    margin: 10px;
+    font-size: 6px;
+    display: inline-block;
+    box-shadow: 0px 5px 0 #CCC, 0 6px 3px #444, 0 10px 5px #999;
+    background-image: linear-gradient(top, #fefefe, #f1f1f1 80%)
+}
+  .die.selected,
+  .die:not(#diceCurrent):hover {
+      box-shadow: 0px 5px 0 #CCC, 0 6px 20px #666, 0 10px 5px #999;
+      cursor: pointer;
+  }    
+.die:after {
+        content: "";
+    width: 20%; 
+    height: 20%; 
+    left: 50%; 
+    top: 50%;
+    margin: -10%;
+    background: #345;
+    border-radius: 50%;
+    display: block;
+    position: absolute;
+}
+
+#replay {
+  height: 42px;
+  line-height: 42px;
+  width: 150px;
+  text-align: center;
+  border: 1px solid #469df5;
+  color: #fff;
+  text-shadow: 1px 1px 0px #287ace;
+  box-shadow: inset 0px 1px 0px 0px #cae3fc;
+  border-radius: 5px;
+  display:none;
+  margin: 40px auto;
+  position: relative;
+  background: -webkit-gradient( linear, left top, left bottom, color-stop(0.05, #79bbff), color-stop(1, #4197ee) );
+  background: -moz-linear-gradient( center top, #79bbff 5%, #4197ee 100% );
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#79bbff', endColorstr='#4197ee');
+}
+  #replay:hover {
+	box-shadow: 3px 3px 6px #444;
+	cursor: pointer;
+  }
+  #replay:active {
+	box-shadow: none;
+    top: 3px;
+    left: 3px;
+  }
+
+
+</style>
+
+
+
+
+</head>
+<body>
+
+<div class="diceHeader">
+  One Dice Game
+</div>
+
+<div class="diceRules">
+	Click or use keyboard arrows (up, down, left, right) to choose dice rotation direction.<br/> First player to 31 points wins!
+</div>
+
+<div id="player" class="diceGame">
+   <div class="dice"></div>
+  <div class="score">
+     <div class="scoreName">
+        Player:
+        <span class="scoreCount">0</span> 
+     </div>
+  </div>
+</div>
+
+<div id="computer" class="diceGame">
+   <div class="dice"></div>
+   <div class="score">
+	     <div class="scoreName">
+	       Computer:
+	       <span class="scoreCount">0</span> 
+         </div>
+   </div>
+</div>
+
+<div id="replay">PLAY AGAIN</div>
+
+
+<div style="display:none;" class="diceTemplate">
+   
+      <div class="diceRow">
+         <div class="diceUp die die{{dieUp}}" data-value="{{dieUp}}"></div>
+      </div>
+      <div class="diceRow">
+         <div class="diceLeft die die{{dieLeft}}" data-value="{{dieLeft}}"></div>
+         <div class="diceCurrent die die{{current}}" data-value="{{current}}"></div>
+         <div class="diceRight die die{{dieRight}}" data-value="{{dieRight}}"></div>
+      </div>
+      <div class="diceRow">
+         <div class="diceDown die die{{dieDown}}" data-value="{{dieDown}}"></div>
+      </div>
+   
+</div>
+
+
+
+
+
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript" src="mustache.js" asynch></script>
+<script type="text/javascript" asynch>
+
+$(document).ready(function(){
+
+var playerStart = Math.floor(Math.random() * 6)+1;
+renderDice(playerStart);
+$("#player .scoreCount").text(playerStart);
+
+var computerStart = Math.floor(Math.random() * 6)+1;
+renderDice(computerStart, true);
+$("#computer .scoreCount").text(computerStart);
+
+//randomly decide who plays first
+if (Math.floor(Math.random()*2)) {
+	$("#player .diceCurrent").addClass("selected");
+	$("#player .die:not(.diceCurrent)").fadeOut(300, function(){
+		$(this).css("visibility", "hidden").show();
+	});
+	setTimeout(computerTurn,500);
+} else {
+	$("#computer .diceCurrent").addClass("selected");
+	$("#computer .die:not(.diceCurrent)").fadeOut(300, function(){
+		$(this).css("visibility", "hidden").show();
+	});
+}
+
+$("#replay").click(function(){
+	location.reload();
+});
+
+$("#player").on("click", ".die:not(.diceCurrent)", function(e){
+	if ($("#replay").is(":visible") || $("#player").hasClass("computerTurn")) {
+		return;
+	}
+	chooseDie($(this));
+});
+
+$("html").keyup(function(e){
+	e.stopPropagation();
+
+	if ($("#replay").is(":visible") || $("#player").hasClass("computerTurn")) {
+		return;
+	}
+
+	switch (e.which) {
+	   case 37:
+		 chooseDie($('#player .diceLeft'));
+		 break;
+	   case 38:
+		 chooseDie($('#player .diceUp'));
+		 break;
+	   case 39:
+		 chooseDie($('#player .diceRight'));
+		 break;
+	   case 40:
+		 chooseDie($('#player .diceDown'));
+		 break;
+	   default:
+		 //no action;
+	     break;
+	}
+});
+
+function chooseDie(die, computer) {
+	var player = computer ? $("#computer") : $("#player");
+	$("#player").addClass("computerTurn");
+	$(die).addClass("selected");
+    var pos = $(die).offset();
+    var curPos = $(".diceCurrent", $(player)).offset();
+    
+    var score = Number($(".scoreCount", $(player)).text()) + Number($(die).data("value"));
+
+    $(".scoreCount", $(player)).text(score);
+    
+    $(die).animate({top: curPos.top - pos.top, left: curPos.left - pos.left}, 600);
+    $(".die:not(.selected)", $(player)).fadeOut(400, function(){
+        $(this).css("visibility", "hidden").show();
+    });
+    
+    
+    if (score === 31) {
+    	$(player).addClass("win");
+		$("#replay").show();
+    } else if (score > 31) {
+    	$(player).addClass("lose");
+		$("#replay").show();
+    } else {
+        setTimeout(function(){
+            renderDice(null, !computer);
+			if(!computer) {
+            	computerTurn();
+			}
+        }, 1000);
+		if(computer) {
+			$("#player").removeClass("computerTurn");
+		}
+    }
+}
+
+function renderDice(currentDie, computer) {
+	var player = computer ? $("#computer") : $("#player");
+
+    if(!currentDie) {
+		currentDie = $(".selected", $(player)).data("value");
+	}
+	
+	var json = {
+	   current: currentDie
+	};
+	
+	for (var i=1;i<7;i++) {
+		if (i !== currentDie && i !== 7 - currentDie) {
+			if (json.dieUp) {
+				json.dieLeft = i;
+				json.dieRight = 7 - i;
+				i=7;
+			} else {
+				json.dieUp = i;
+				json.dieDown = 7 - i;
+			}
+		}
+	}
+
+    //ideally imported using require
+	var template = $(".diceTemplate").html();
+	var html = Mustache.to_html(template, json);
+	$(".dice", player).html(html);
+}
+
+function computerTurn() {
+	var die = $("#computer .die:not(.diceCurrent)")[Math.floor(Math.random() * 4)];
+
+	//if computer can win, choose to
+	var compScore = Number($("#computer .scoreCount").text());
+	if (compScore > 24 && $("#computer .die"+(31 - compScore)+":not(.dieCurrent)").length) {
+		die = $("#computer .die"+(31 - compScore)+":not(.dieCurrent)");
+	}
+
+	setTimeout(function(){
+		//timeout to simulate computer thinking
+		chooseDie(die, true);
+	}, 500);
+}
+
+});
+
+</script>
+
+
+
+
+</body>
+</html>
